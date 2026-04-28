@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Góc Kỷ Niệm Nguyễn Trãi</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Poppins;
+}
+body{
+    background:linear-gradient(120deg,#e0ecff,#f9fbff);
+}
+
+/* HEADER */
+.header{
+    background:linear-gradient(45deg,#2b6cff,#6ea8ff);
+    color:white;
+    padding:40px;
+    text-align:center;
+    box-shadow:0 4px 15px rgba(0,0,0,0.15);
+}
+.header h1{font-size:38px}
+.header p{opacity:.9}
+
+/* BOX UPLOAD */
+.upload-box{
+    width:600px;
+    background:white;
+    margin:40px auto;
+    padding:25px;
+    border-radius:20px;
+    box-shadow:0 0 20px rgba(0,0,0,0.1);
+    text-align:center;
+}
+input,textarea{
+    width:90%;
+    padding:10px;
+    margin:10px;
+    border-radius:10px;
+    border:1px solid #ccc;
+}
+button{
+    background:#2b6cff;
+    color:white;
+    border:none;
+    padding:12px 25px;
+    border-radius:10px;
+    font-size:16px;
+    cursor:pointer;
+}
+button:hover{background:#1d4ed8}
+
+/* GALLERY */
+.gallery{
+    width:90%;
+    margin:auto;
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:25px;
+    padding-bottom:60px;
+}
+.card{
+    background:white;
+    border-radius:18px;
+    overflow:hidden;
+    box-shadow:0 0 15px rgba(0,0,0,0.1);
+    animation:fade .6s ease;
+}
+.card img{
+    width:100%;
+    height:230px;
+    object-fit:cover;
+}
+.caption{padding:15px}
+.comment{font-size:14px;color:#555;margin-top:8px}
+
+@keyframes fade{
+    from{opacity:0;transform:translateY(20px)}
+    to{opacity:1;transform:translateY(0)}
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+    <h1>📸 Góc Kỷ Niệm THPT Nguyễn Trãi</h1>
+    <p>Upload ảnh • Viết cảm nghĩ • Lưu giữ thanh xuân</p>
+</div>
+
+<div class="upload-box">
+    <h2>Đăng ảnh kỷ niệm</h2>
+    <input type="file" id="imageInput">
+    <textarea id="captionInput" placeholder="Viết kỷ niệm của bạn..."></textarea>
+    <br>
+    <button onclick="uploadPost()">Đăng kỷ niệm</button>
+</div>
+
+<div class="gallery" id="gallery"></div>
+
+<script>
+/* ================================
+   DATA DEMO (ẢNH MẪU)
+================================ */
+const demoPosts = [
+{
+image:"https://images.unsplash.com/photo-1503676260728-1c00da094a0b?q=80&w=1200",
+caption:"Ngày đầu vào trường 🥺",
+time:"01/09/2022"
+},
+{
+image:"https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=1200",
+caption:"Giờ ra chơi huyền thoại 😆",
+time:"15/11/2023"
+},
+{
+image:"https://scontent.fdad4-1.fna.fbcdn.net/v/t39.30808-6/676897529_1257827429862758_4824767556040102314_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=1d70fc&_nc_ohc=1qXwVzyk3AcQ7kNvwF-brDF&_nc_oc=AdrGnm7Zf8ige07ImMFk3rvCirk_O5DF42LT7ciaSeZtYrQXoAcdPFrBzeUM95tpIWc&_nc_zt=23&_nc_ht=scontent.fdad4-1.fna&_nc_gid=xo74U8oRRet2jJjg58A8kQ&_nc_ss=7b2a8&oh=00_Af2Zq5FNHQK6YzB1I4k12ax0LSRw9arkzxpDxK6VrrK7nA&oe=69F6B2EA",
+caption:"Thanh xuân tụi mình 🌈",
+time:"30/05/2024"
+},
+{
+image:"https://images.unsplash.com/photo-1496317899792-9d7dbcd928a1?q=80&w=1200",
+caption:"Buổi chào cờ sáng thứ 2 🇻🇳",
+time:"10/10/2023"
+},
+{
+image:"https://images.unsplash.com/photo-1519455953755-af066f52f1a6?q=80&w=1200",
+caption:"Hội trại siêu vui 🔥",
+time:"26/03/2024"
+},
+{
+image:"https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1200",
+caption:"Team bạn thân 💙",
+time:"12/02/2024"
+},
+{
+image:"https://images.unsplash.com/photo-1531482615713-2afd69097998?q=80&w=1200",
+caption:"Tiết học nhóm chăm chỉ 📚",
+time:"08/01/2024"
+},
+{
+image:"https://images.unsplash.com/photo-1544717297-fa95b6ee9643?q=80&w=1200",
+caption:"Sân trường chiều tan học ☀️",
+time:"20/05/2024"
+}
+];
+
+
+/* ================================
+   LOAD DATA
+================================ */
+let posts = JSON.parse(localStorage.getItem("posts"));
+
+/* Nếu lần đầu mở web → nạp ảnh demo */
+if(!posts || posts.length === 0){
+    posts = demoPosts;
+    localStorage.setItem("posts", JSON.stringify(posts));
+}
+
+/* ================================
+   HIỂN THỊ BÀI ĐĂNG
+================================ */
+function renderPosts(){
+    let gallery=document.getElementById("gallery");
+    gallery.innerHTML="";
+
+    posts.forEach(post=>{
+        gallery.innerHTML += `
+        <div class="card">
+            <img src="${post.image}">
+            <div class="caption">
+                <b>${post.time}</b>
+                <p>${post.caption}</p>
+                <div class="comment">💬 Bạn bè sẽ thấy bài đăng này</div>
+            </div>
+        </div>`;
+    });
+}
+
+/* ================================
+   UPLOAD ẢNH
+================================ */
+function uploadPost(){
+    let file=document.getElementById("imageInput").files[0];
+    let caption=document.getElementById("captionInput").value;
+
+    if(!file){
+        alert("Chọn ảnh đi 😭");
+        return;
+    }
+
+    let reader=new FileReader();
+    reader.onload=function(e){
+        posts.unshift({
+            image:e.target.result,
+            caption: caption || "Một kỷ niệm đẹp 💙",
+            time:new Date().toLocaleString()
+        });
+
+        localStorage.setItem("posts", JSON.stringify(posts));
+        renderPosts();
+
+        document.getElementById("captionInput").value="";
+        document.getElementById("imageInput").value="";
+    }
+    reader.readAsDataURL(file);
+}
+
+/* LOAD LẦN ĐẦU */
+renderPosts();
+</script>
+
+</body>
+</html>
