@@ -374,55 +374,158 @@ iframe:hover{
 }
   
 /* ================= COMMENT ================= */
-textarea{
-    width:60%;
-    height:120px;
-    padding:15px;
 
-    border-radius:15px;
-    border:1px solid rgba(56,189,248,.4);
+.comment-form{
+    background:rgba(255,255,255,.6);
+    backdrop-filter:blur(14px);
 
-    outline:none;
-    font-size:16px;
+    border:1px solid rgba(255,255,255,.5);
+
+    border-radius:25px;
+
+    padding:25px;
 
     box-shadow:
-        inset 0 0 10px rgba(0,0,0,.05),
-        0 0 15px rgba(56,189,248,.1);
+        0 10px 35px rgba(0,0,0,.08);
 
-    transition:0.3s ease;
+    margin-bottom:35px;
 }
 
-/* focus textarea */
-textarea:focus{
-    border-color:#38bdf8;
+/* textarea */
+.comment-form textarea{
+    width:100%;
+    height:130px;
+
+    border:none;
+    outline:none;
+    resize:none;
+
+    padding:18px;
+
+    border-radius:18px;
+
+    font-size:16px;
+    line-height:1.6;
+
+    background:#f8fafc;
+
+    color:#0f172a;
+
     box-shadow:
-        0 0 20px rgba(56,189,248,.3),
-        inset 0 0 10px rgba(0,0,0,.05);
+        inset 0 0 8px rgba(0,0,0,.05);
 }
 
 /* button */
-button{
-    margin-top:15px;
-    padding:12px 30px;
+.comment-form button{
+    margin-top:18px;
+
+    padding:12px 28px;
 
     border:none;
-    border-radius:30px;
-
-    background:linear-gradient(90deg,#38bdf8,#a78bfa);
-    color:white;
-    font-weight:bold;
+    border-radius:999px;
 
     cursor:pointer;
-    transition:0.3s ease;
 
-    box-shadow:0 10px 25px rgba(56,189,248,.25);
+    font-weight:700;
+    font-size:15px;
+
+    color:white;
+
+    background:linear-gradient(
+        90deg,
+        #38bdf8,
+        #a78bfa
+    );
+
+    transition:.3s;
 }
 
-/* hover button */
-button:hover{
-    transform:scale(1.08);
-    box-shadow:0 15px 35px rgba(167,139,250,.35);
+.comment-form button:hover{
+    transform:translateY(-2px) scale(1.03);
 }
+
+/* list */
+.comment-list{
+    display:flex;
+    flex-direction:column;
+    gap:22px;
+}
+
+/* item */
+.comment-item{
+    display:flex;
+    gap:15px;
+
+    padding:22px;
+
+    border-radius:24px;
+
+    background:rgba(255,255,255,.72);
+
+    backdrop-filter:blur(12px);
+
+    border:1px solid rgba(255,255,255,.6);
+
+    box-shadow:
+        0 10px 30px rgba(0,0,0,.08);
+
+    animation:fadeUp .4s ease;
+}
+
+/* avatar */
+.comment-avatar{
+    width:55px;
+    height:55px;
+
+    border-radius:50%;
+
+    background:linear-gradient(
+        135deg,
+        #38bdf8,
+        #a78bfa
+    );
+
+    color:white;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:20px;
+    font-weight:800;
+
+    flex-shrink:0;
+}
+
+/* content */
+.comment-content{
+    flex:1;
+}
+
+/* name */
+.comment-name{
+    font-size:17px;
+    font-weight:800;
+
+    color:#0ea5e9;
+
+    margin-bottom:4px;
+}
+
+/* time */
+.comment-time{
+    font-size:13px;
+    color:#64748b;
+
+    margin-bottom:12px;
+}
+
+/* text */
+.comment-text{
+    line-height:1.7;
+    color:#1e293b;
+}
+
 
 /* ================= ANIMATION (GIỮ NHẸ) ================= */
 @keyframes fadeUp{
@@ -956,40 +1059,7 @@ button:hover{
         transform:translateX(-100%);
     }
 }
- .footer{
-    background: #1f1f2e;
-    color: white;
-    padding: 25px 15px;
-    text-align: center;
-    margin-top: 40px;
-}
 
-.footer-content h3{
-    margin-bottom: 10px;
-    font-size: 20px;
-    color: #ffd36b;
-}
-
-.footer-content p{
-    margin: 5px 0;
-    font-size: 14px;
-}
-
-.footer .desc{
-    max-width: 600px;
-    margin: 10px auto;
-    opacity: 0.8;
-    font-size: 13px;
-    line-height: 1.5;
-}
-
-.footer .copyright{
-    margin-top: 15px;
-    font-size: 12px;
-    opacity: 0.6;
-    border-top: 1px solid rgba(255,255,255,0.2);
-    padding-top: 10px;
-}
 /* ================= INTRO ================= */
 .intro-wrapper{
     display:grid;
@@ -1281,6 +1351,152 @@ button:hover{
 
     background:white;
 }
+/* ===== AVATAR COMMENT ===== */
+.comment-avatar-img{
+    width:60px;
+    height:60px;
+    border-radius:50%;
+    object-fit:cover;
+
+    border:3px solid rgba(56,189,248,.5);
+
+    box-shadow:
+        0 0 15px rgba(56,189,248,.4),
+        0 0 25px rgba(167,139,250,.2);
+
+    flex-shrink:0;
+
+    transition:.3s ease;
+}
+
+.comment-avatar-img:hover{
+    transform:scale(1.08);
+    box-shadow:
+        0 0 25px rgba(56,189,248,.7),
+        0 0 35px rgba(167,139,250,.4);
+}
+.footer{
+    background:#0f172a;
+    color:white;
+    padding:50px 20px 20px;
+    margin-top:60px;
+}
+
+.footer-container{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:30px;
+    max-width:1200px;
+    margin:auto;
+}
+
+.footer-box h3{
+    margin-bottom:12px;
+    color:#38bdf8;
+}
+
+.footer-box p{
+    font-size:14px;
+    opacity:.85;
+    line-height:1.6;
+}
+
+/* avatar nhóm */
+.team{
+    display:flex;
+    gap:10px;
+    margin-top:10px;
+}
+
+.team img{
+    width:45px;
+    height:45px;
+    border-radius:50%;
+    border:2px solid #38bdf8;
+    object-fit:cover;
+    transition:.3s;
+}
+
+.team img:hover{
+    transform:scale(1.2);
+}
+
+/* link fb */
+.fb-link{
+    display:inline-block;
+    margin-top:10px;
+    color:#60a5fa;
+    text-decoration:none;
+    font-weight:600;
+}
+
+.fb-link:hover{
+    color:#38bdf8;
+    text-decoration:underline;
+}
+
+.footer{
+    width:100vw;
+    margin:0;
+    padding:50px 20px 20px;
+    background:#0f172a;
+    color:white;
+
+    position:relative;
+    left:50%;
+    right:50%;
+    margin-left:-50vw;
+    margin-right:-50vw;
+}
+
+.footer-container{
+    max-width:1200px;
+    margin:0 auto;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:30px;
+}
+
+body, html{
+    margin:0;
+    padding:0;
+    overflow-x:hidden;
+}
+
+/* team avatars */
+.team{
+    display:flex;
+    gap:10px;
+    margin-top:10px;
+}
+
+.team img{
+    width:45px;
+    height:45px;
+    border-radius:50%;
+    border:2px solid #38bdf8;
+    object-fit:cover;
+    transition:.3s;
+}
+
+.team img:hover{
+    transform:scale(1.2);
+}
+
+.fb-link{
+    display:inline-block;
+    margin-top:10px;
+    color:#60a5fa;
+    text-decoration:none;
+    font-weight:600;
+}
+
+.fb-link:hover{
+    color:#38bdf8;
+    text-decoration:underline;
+}
+
+
 
 </style>  
 </head>
@@ -1444,64 +1660,127 @@ button:hover{
     </div>
 
 </section>
-	
-	
 <!-- ================= COMMENT ================= -->
 <section class="section reveal" id="comment">
+
     <h2 class="intro-title">
-	<span>Cảm nghĩ học sinh</span>
-	</h2>
+        <span>Cảm nghĩ học sinh</span>
+    </h2>
 
-    <div class="comment-box">
-        <textarea id="cmt" placeholder="Viết cảm nghĩ của bạn về mái trường..."></textarea>
-        <button onclick="addComment()">Gửi bình luận</button>
+    <!-- FORM -->
+    <div class="comment-form">
+
+        <textarea 
+            id="cmt"
+            placeholder="Viết cảm nghĩ của bạn về mái trường...">
+        </textarea>
+
+        <button onclick="addComment()">
+            Gửi bình luận
+        </button>
+
     </div>
-
-    <!-- LIST COMMENT -->
-    <div id="list" class="comment-list"></div>
-</section>
+<div id="list" class="comment-list">
+</div>
 
 <script>
-const names = ["Đắc Di","Thành Nam","Diệu Hoàng","Việt Trường","Tâm Như"];
 
-/* ===== ADD COMMENT ===== */
+let fakeShown = false;
+
+const fakeComments = [
+{
+    name:"Nguyễn Minh Anh",
+    avatar:"https://i.pravatar.cc/100?img=12",
+    text:"Trường rất đẹp và thầy cô cực kỳ thân thiện ❤️"
+},
+{
+    name:"Trần Hoàng Nam",
+    avatar:"https://i.pravatar.cc/100?img=32",
+    text:"Em rất thích sân trường và các hoạt động ngoại khóa 😍"
+},
+{
+    name:"Lê Khánh Vy",
+    avatar:"https://i.pravatar.cc/100?img=15",
+    text:"Môi trường học tập rất hiện đại và năng động ✨"
+},
+{
+    name:"Phạm Gia Huy",
+    avatar:"https://i.pravatar.cc/100?img=45",
+    text:"Căng tin trường sạch sẽ và đồ ăn ngon 😆"
+},
+{
+    name:"Đỗ Ngọc Linh",
+    avatar:"https://i.pravatar.cc/100?img=23",
+    text:"Em sẽ nhớ mãi những kỷ niệm thanh xuân ở đây 🌸"
+},
+{
+    name:"Võ Nhật Quang",
+    avatar:"https://i.pravatar.cc/100?img=60",
+    text:"Website nhìn xịn thật sự luôn 🔥"
+}
+];
+
 function addComment(){
-    let text = document.getElementById("cmt").value.trim();
-    if(text === "") return;
 
-    let name = names[Math.floor(Math.random()*names.length)];
-    let time = new Date().toLocaleString();
+    let input = document.getElementById("cmt");
+    let list = document.getElementById("list");
 
-    let box = document.createElement("div");
-    box.className = "comment-box";
+    let text = input.value.trim();
 
-    box.innerHTML = `
-        <div class="comment-name">${name}</div>
-        <div class="comment-time">${time}</div>
-        <p>${text}</p>
+    if(text === ""){
+        alert("Vui lòng nhập bình luận 😄");
+        return;
+    }
+
+    // comment của bạn
+    let myComment = document.createElement("div");
+    myComment.className = "comment-item";
+
+    myComment.innerHTML = `
+        <img class="comment-avatar-img"
+        src="https://i.pravatar.cc/100?img=5">
+
+        <div class="comment-content">
+            <div class="comment-name">Bạn</div>
+            <div class="comment-time">Vừa xong</div>
+            <div class="comment-text">${text}</div>
+        </div>
     `;
 
-    document.getElementById("list").prepend(box);
-    document.getElementById("cmt").value = "";
+    list.prepend(myComment);
+
+    input.value = "";
+
+    // hiện 6 comment fake sau khi gửi
+    if(!fakeShown){
+
+        fakeComments.forEach((cmt,index)=>{
+
+            setTimeout(()=>{
+
+                let div = document.createElement("div");
+                div.className = "comment-item";
+
+                div.innerHTML = `
+                    <img class="comment-avatar-img"
+                    src="${cmt.avatar}">
+
+                    <div class="comment-content">
+                        <div class="comment-name">${cmt.name}</div>
+                        <div class="comment-time">Vừa xong</div>
+                        <div class="comment-text">${cmt.text}</div>
+                    </div>
+                `;
+
+                list.appendChild(div);
+
+            }, index * 400);
+
+        });
+
+        fakeShown = true;
+    }
 }
-
-/* ===== FAKE COMMENT ===== */
-window.onload = function(){
-    const fake = [
-        "Ngôi trường tuyệt vời nhất ❤️",
-        "Thầy cô rất tâm lý luôn!",
-        "Thanh xuân của mình ở đây ",
-        "Sân trường siêu đẹp luôn!",
-        "Mong sớm quay lại trường 😭"
-    ];
-
-    fake.forEach(t=>{
-        document.getElementById("cmt").value = t;
-        addComment();
-    });
-
-    document.getElementById("cmt").value = "";
-};
 </script>
 <!-- ===== AI BUTTON ===== -->
 <div class="ai-button" onclick="toggleAI()">🤖</div>
@@ -1559,19 +1838,48 @@ function toggleAI(){
 }
 </script>
 <footer class="footer">
-    <div class="footer-content">
-        <h3>🌈 Nhóm Cầu Vồng Khuyết</h3>
-        <p>THPT Nguyễn Trãi</p>
 
-        <p class="desc">
-            Trang web được xây dựng nhằm giới thiệu trường học, chia sẻ hình ảnh
-            và hỗ trợ học sinh trong quá trình học tập và trải nghiệm.
-        </p>
+    <div class="footer-container">
 
-        <div class="copyright">
-            © 2026 Nhóm Cầu Vồng Khuyết. All rights reserved.
+        <!-- GIỚI THIỆU -->
+        <div class="footer-box">
+            <h3>🌈 Nhóm Cầu Vồng Khuyết</h3>
+            <p>THPT Nguyễn Trãi</p>
+            <p>Website giới thiệu trường học & hoạt động học sinh.</p>
         </div>
+
+        <!-- LIÊN HỆ -->
+        <div class="footer-box">
+            <h3>📞 Liên hệ</h3>
+            <p>Email: thptnguyentrai@gmail.com</p>
+            <p>Địa chỉ: Phú Yên, Việt Nam</p>
+        </div>
+
+        <!-- NHÓM -->
+        <div class="footer-box">
+            <h3>👨‍👩‍👧‍👦 Thành viên nhóm</h3>
+
+            <div class="team">
+                <img src="https://i.pravatar.cc/80?img=12">
+                <img src="https://i.pravatar.cc/80?img=32">
+                <img src="https://i.pravatar.cc/80?img=45">
+                <img src="https://i.pravatar.cc/80?img=23">
+            </div>
+        </div>
+
+        <!-- FACEBOOK -->
+        <div class="footer-box">
+            <h3>🌐 Mạng xã hội</h3>
+
+            <a class="fb-link"
+               href="https://www.facebook.com/"
+               target="_blank">
+                🔵 Facebook trường THPT Nguyễn Trãi
+            </a>
+        </div>
+
     </div>
+
 </footer>
 </body> 
 
