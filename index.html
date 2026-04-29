@@ -24,35 +24,33 @@ body{
     overflow-x:hidden;
     position:relative;
     min-height:100vh;
-    font-family:'Segoe UI', sans-serif; /* chuyển từ * sang đây cho sạch hơn */
-    line-height:1.6;
 }
 
 /* glow nền */
-body::before,
+body::before{
+    content:"";
+    position:fixed;
+    width:900px;
+    height:900px;
+    background:radial-gradient(circle, rgba(56,189,248,.18), transparent 70%);
+    top:-200px;
+    left:-200px;
+    z-index:-1;
+    pointer-events:none;
+}
+
 body::after{
     content:"";
     position:fixed;
     width:900px;
     height:900px;
-    border-radius:50%; /* FIX: làm glow mềm hơn */
-    z-index:-1;
-    pointer-events:none;
-    filter: blur(60px); /* FIX: glow mượt hơn */
-}
-
-body::before{
-    background:radial-gradient(circle, rgba(56,189,248,.18), transparent 70%);
-    top:-200px;
-    left:-200px;
-}
-
-body::after{
     background:radial-gradient(circle, rgba(0,255,255,.15), transparent 70%);
     bottom:-250px;
     right:-200px;
+    z-index:-1;
+    pointer-events:none;
 }
-
+  
 /* ================= NAVBAR ================= */
 .navbar{
     position:fixed;
@@ -62,15 +60,10 @@ body::after{
     display:flex;
     justify-content:space-between;
     align-items:center;
-
-    background:rgba(255,255,255,.65); /* FIX: trong hơn */
-    backdrop-filter:blur(16px);
-    -webkit-backdrop-filter:blur(16px); /* FIX iOS */
-
+    background:rgba(255,255,255,.75);
+    backdrop-filter:blur(14px);
     box-shadow:0 8px 30px rgba(0,0,0,.08);
     z-index:999;
-
-    transition:0.3s ease; /* FIX: mượt khi scroll sau này */
 }
 
 /* logo */
@@ -83,17 +76,12 @@ body::after{
     color:#0284c7;
 }
 
-/* logo img */
+/* nếu có ảnh logo */
 .logo img{
     width:42px;
     height:42px;
     border-radius:50%;
     object-fit:cover;
-    transition:0.3s ease;
-}
-
-.logo img:hover{
-    transform:rotate(6deg) scale(1.08);
 }
 
 /* menu */
@@ -109,13 +97,11 @@ body::after{
     color:#334155;
     font-weight:600;
     position:relative;
-    transition:0.25s ease;
+    transition:.2s;
 }
 
-/* hover đẹp hơn */
 .menu a:hover{
     color:#0ea5e9;
-    transform:translateY(-2px);
 }
 
 /* underline animation */
@@ -127,13 +113,12 @@ body::after{
     background:#38bdf8;
     left:0;
     bottom:-6px;
-    transition:0.3s ease;
-    border-radius:10px;
+    transition:.3s;
 }
 
 .menu a:hover::after{
     width:100%;
-}
+}  
   
 /* ================= HERO ================= */
 .hero{
@@ -265,31 +250,7 @@ body::after{
     }
 }
 /* ================= SECTION ================= */
-.section{
-    padding:100px 10%;
-    animation:fadeUp 1s;
-    text-align:left; /* 👈 đổi từ center sang trái */
-}
 
-/* tiêu đề */
-.section h2{
-    font-size:38px;
-    margin-bottom:20px;
-    color:#0284c7;
-    text-align:left; /* 👈 đảm bảo luôn nằm trái */
-    position:relative;
-}
-
-/* gạch dưới tiêu đề (giữ hiệu ứng đẹp của bạn) */
-.section h2::after{
-    content:"";
-    display:block;
-    width:120px;
-    height:4px;
-    margin-top:10px;
-    border-radius:10px;
-    background:linear-gradient(90deg,#00f5ff,#38bdf8,#00f5ff);
-}
 
 /* đoạn mô tả */
 .section p{
@@ -1029,41 +990,311 @@ button:hover{
     border-top: 1px solid rgba(255,255,255,0.2);
     padding-top: 10px;
 }
-.comment{
-    display: flex;
-    gap: 10px;
-    align-items: flex-start;
-    margin: 10px 0;
-    padding: 8px;
-    background: #f5f5f5;
-    border-radius: 10px;
+/* ================= INTRO ================= */
+.intro-wrapper{
+    display:grid;
+    grid-template-columns:1.1fr 1fr;
+    gap:60px;
+    align-items:center;
 }
 
-.comment .avatar{
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    object-fit: cover;
+.intro-tag{
+    display:inline-block;
+    padding:8px 18px;
+    border-radius:30px;
+    background:rgba(56,189,248,.12);
+    border:1px solid rgba(56,189,248,.3);
+    color:#0284c7;
+    font-weight:700;
+    margin-bottom:20px;
 }
 
-.comment .content{
-    flex: 1;
-    font-size: 14px;
-    line-height: 1.4;
+/* ===== TITLE MỚI ===== */
+.intro-title{
+    font-size:58px;
+    line-height:1.15;
+    margin-bottom:25px;
+    font-weight:900;
+
+    color:#1e293b;
+
+    animation: titleGlow 3s ease-in-out infinite;
 }
+
+/* dòng dưới */
+.intro-title span{
+    display:block;
+
+    background:linear-gradient(
+        90deg,
+        #ff9a8b,
+        #ffb199,
+        #ffd6a5,
+        #fff0c1
+    );
+
+    background-size:300%;
+
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+
+    animation: softMove 6s linear infinite;
+
+    letter-spacing:2px;
+
+    filter:drop-shadow(0 0 12px rgba(255,180,120,.35));
+}
+
+/* glow nhẹ */
+@keyframes titleGlow{
+    0%,100%{
+        text-shadow:0 0 0 rgba(255,255,255,0);
+    }
+
+    50%{
+        text-shadow:
+            0 0 10px rgba(255,200,150,.25),
+            0 0 20px rgba(255,170,120,.18);
+    }
+}
+
+/* chạy màu mềm */
+@keyframes softMove{
+    0%{
+        background-position:0%;
+    }
+
+    100%{
+        background-position:300%;
+    }
+}
+
+.intro-text{
+    font-size:18px;
+    line-height:1.9;
+    color:#334155;
+    margin-bottom:20px;
+}
+
+.intro-right img{
+    width:100%;
+    border-radius:30px;
+
+    box-shadow:
+        0 25px 60px rgba(0,0,0,.15),
+        0 0 40px rgba(56,189,248,.2);
+
+    transition:.5s ease;
+}
+
+.intro-right img:hover{
+    transform:scale(1.03) rotate(1deg);
+}
+
+/* stats */
+.intro-stats{
+    display:flex;
+    gap:20px;
+    margin-top:35px;
+    flex-wrap:wrap;
+}
+
+.stat-card{
+    flex:1;
+    min-width:140px;
+
+    padding:25px;
+    border-radius:22px;
+
+    background:rgba(255,255,255,.55);
+    backdrop-filter:blur(14px);
+
+    border:1px solid rgba(255,255,255,.5);
+
+    box-shadow:0 10px 30px rgba(0,0,0,.08);
+
+    transition:.3s ease;
+}
+
+.stat-card:hover{
+    transform:translateY(-6px);
+    box-shadow:0 20px 40px rgba(56,189,248,.18);
+}
+
+.stat-card h3{
+    font-size:34px;
+    color:#0ea5e9;
+    margin-bottom:8px;
+}
+
+.stat-card span{
+    color:#475569;
+    font-weight:600;
+}
+
+/* ================= GALLERY ================= */
+.gallery-title{
+    font-size:42px;
+    font-weight:900;
+    margin-bottom:40px;
+
+    background:linear-gradient(90deg,#38bdf8,#a78bfa);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+.gallery-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+    gap:28px;
+}
+
+.gallery-card{
+    position:relative;
+    overflow:hidden;
+    border-radius:28px;
+
+    height:320px;
+
+    box-shadow:
+        0 20px 45px rgba(0,0,0,.12),
+        0 0 25px rgba(56,189,248,.12);
+
+    transition:.45s ease;
+}
+
+.gallery-card img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+
+    transition:.6s ease;
+}
+
+.gallery-card:hover img{
+    transform:scale(1.12);
+}
+
+.gallery-overlay{
+    position:absolute;
+    inset:0;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-end;
+
+    padding:28px;
+
+    background:linear-gradient(
+        to top,
+        rgba(0,0,0,.82),
+        rgba(0,0,0,.15),
+        transparent
+    );
+
+    color:white;
+}
+
+.gallery-overlay h3{
+    font-size:28px;
+    font-weight:800;
+    margin-bottom:8px;
+
+    transform:translateY(20px);
+    opacity:0;
+
+    transition:.4s ease;
+}
+
+.gallery-overlay p{
+    font-size:15px;
+    line-height:1.6;
+
+    transform:translateY(20px);
+    opacity:0;
+
+    transition:.55s ease;
+}
+
+.gallery-card:hover .gallery-overlay h3,
+.gallery-card:hover .gallery-overlay p{
+    transform:translateY(0);
+    opacity:1;
+}
+
+.gallery-card:hover{
+    transform:translateY(-10px);
+
+    box-shadow:
+        0 30px 70px rgba(56,189,248,.25),
+        0 0 40px rgba(167,139,250,.18);
+}
+
+/* ================= RESPONSIVE ================= */
+@media(max-width:900px){
+
+    .intro-wrapper{
+        grid-template-columns:1fr;
+    }
+
+    .intro-title{
+        font-size:42px;
+    }
+
+    .gallery-card{
+        height:260px;
+    }
+
+}
+.activity-card{
+    text-decoration:none !important;
+    color:#0ea5e9 !important;
+
+    cursor:pointer;
+    position:relative;
+    overflow:hidden;
+
+    display:block;
+}
+/* ===== WEBSITE FRAME ===== */
+
+.website-frame{
+    width:100%;
+    height:900px;
+
+    overflow:hidden;
+
+    border-radius:30px;
+
+    border:1px solid rgba(255,255,255,.08);
+
+    box-shadow:
+    0 20px 50px rgba(0,0,0,.35);
+
+    margin-top:40px;
+}
+
+.website-frame iframe{
+    width:100%;
+    height:100%;
+    border:none;
+
+    background:white;
+}
+
 </style>  
 </head>
   <body> 
  <!-- ===== NAVBAR ===== -->  <div class="navbar">  
     <div class="logo">  
-    <img src="https://scontent.fdad4-1.fna.fbcdn.net/v/t39.30808-6/540568780_122139187688908301_6605054400821476298_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=1d70fc&_nc_ohc=e5GxnC8QNBoQ7kNvwH-NVxK&_nc_oc=AdpAzQ6029P1nHj1Ckh-SwEn6slW2o6-MxsQitesGoBGOor4awAxyVAfKVlet9QhVYU&_nc_zt=23&_nc_ht=scontent.fdad4-1.fna&_nc_gid=3uo_Ew7jww2Rh1t_-lY6kg&_nc_ss=7a2a8&oh=00_Af2lsdwG0MUABedJYDqc_diSbYUHFekGdXu9-KsCd7G8Eg&oe=69F6BBF1" alt="logo">  
+    <img src="https://scontent.fdad4-1.fna.fbcdn.net/v/t39.30808-6/540568780_122139187688908301_6605054400821476298_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=1d70fc&_nc_ohc=qlX83gmxViIQ7kNvwGxUZL3&_nc_oc=AdqcBo07m3gaAXj_go71ieYhlJzOtgKI4kySSfRD62znV6Rzi3jzlw5ns3ou7XT1soM&_nc_zt=23&_nc_ht=scontent.fdad4-1.fna&_nc_gid=SE4ikphBtRSWligzEl6XWQ&_nc_ss=7a3a8&oh=00_Af3Ac1e1LSweE3_TyktQ_z4NjTVk0wRIM35Kk-OgneQEUA&oe=69E98CF1" alt="logo">  
     <span>THPT Nguyễn Trãi</span>
 	</div>  <div class="menu">  
     <a href="#gioithieu"><i class="fas fa-school"></i> Giới thiệu</a>  
     <a href="#media"><i class="fas fa-image"></i> Hình ảnh</a>  
     <a href="#map"><i class="fas fa-map-location-dot"></i> Vị trí</a>  
     <a href="#comment"><i class="fas fa-comments"></i> Bình luận</a>  
-    <a href="kyniem.html"><i class="fas fa-camera"></i> Kỷ niệm</a>  
+    <a href="index.html"><i class="fas fa-camera"></i> Kỷ niệm</a>  
 </div>
 
 </div>  <!-- ===== HERO ===== -->  <div class="hero">  
@@ -1074,46 +1305,145 @@ button:hover{
         </h1>  
     </div>  
 </div>  
-<!-- ================= GIỚI THIỆU (NÂNG CẤP) ================= -->
+<!-- ================= GIỚI THIỆU ================= -->
 <section class="section reveal" id="gioithieu">
 
-    <h2 class="title">Giới thiệu trường</h2>
+    <div class="intro-wrapper">
 
-    <!-- LED chạy ngang -->
-    <div class="led-line">
-        ✨ Chào mừng bạn đến với THPT Nguyễn Trãi ✨ • Nơi lưu giữ thanh xuân học trò • Môi trường học tập năng động •
+        <div class="intro-left">
+            <span class="intro-tag">✨ THPT Nguyễn Trãi</span>
+
+            <h2 class="intro-title">
+                
+                <span> Nơi lưu giữ thanh xuân</span>
+            </h2>
+
+            <p class="intro-text">
+                Trường THPT Nguyễn Trãi là môi trường học tập năng động,
+                hiện đại và thân thiện — nơi học sinh không chỉ tiếp thu
+                kiến thức mà còn phát triển kỹ năng sống, tư duy sáng tạo
+                và tinh thần đoàn kết.
+            </p>
+
+            <p class="intro-text">
+                Với khuôn viên xanh – sạch – đẹp, đội ngũ giáo viên tận tâm
+                cùng nhiều hoạt động ngoại khóa sôi động, trường luôn mang
+                đến cho học sinh những trải nghiệm đáng nhớ của tuổi học trò.
+            </p>
+
+            <div class="intro-stats">
+                <div class="stat-card">
+                    <h3>20+</h3>
+                    <span>Năm phát triển</span>
+                </div>
+
+                <div class="stat-card">
+                    <h3>1000+</h3>
+                    <span>Học sinh</span>
+                </div>
+				<a href="hoatdong.html" class="stat-card activity-card">
+    <h3>50+</h3>
+    <span>Hoạt động</span>
+</a>
+
+               
+            </div>
+        </div>
+
+        <div class="intro-right">
+            <img src="https://r73troypb4obj.vcdn.cloud/website02/uploads/pictures/629178c61a1b855737a80c4e/content_khuon-vien-truong-thpt-nguyen-trai-phu-yen.jpg">
+        </div>
+
+    </div>
+</section> 
+<!-- ================= HÌNH ẢNH ================= -->
+<section class="section reveal" id="media">
+
+    <h2 class="intro-title">
+	<span>Không gian trường học</span>
+	</h2>
+
+    <div class="gallery-grid">
+
+        <!-- KHUÔN VIÊN -->
+        <div class="gallery-card">
+            <img src="https://r73troypb4obj.vcdn.cloud/website02/uploads/pictures/629178c61a1b855737a80c4e/content_khuon-vien-truong-thpt-nguyen-trai-phu-yen.jpg">
+
+            <div class="gallery-overlay">
+                <h3>Khuôn viên trường</h3>
+                <p>Không gian rộng rãi, xanh mát và hiện đại.</p>
+            </div>
+        </div>
+
+        <!-- CĂNG TIN -->
+        <div class="gallery-card">
+            <img src="https://scontent.fdad4-1.fna.fbcdn.net/v/t39.30808-6/682678807_1264357839209717_7185099584303070268_n.jpg">
+
+            <div class="gallery-overlay">
+                <h3>Căng tin</h3>
+                <p>Khu vực ăn uống sạch sẽ và tiện nghi cho học sinh.</p>
+            </div>
+        </div>
+
+        <!-- NHÀ Y TẾ -->
+        <div class="gallery-card">
+            <img src="https://scontent.fdad4-1.fna.fbcdn.net/v/t39.30808-6/666972353_122181553310908301_7883110212343217877_n.jpg">
+
+            <div class="gallery-overlay">
+                <h3>Nhà y tế</h3>
+                <p>Luôn hỗ trợ chăm sóc sức khỏe học sinh.</p>
+            </div>
+        </div>
+
+        <!-- NHÀ XE -->
+        <div class="gallery-card">
+            <img src="https://images.unsplash.com/photo-1517457373958-b7bdd4587205?q=80&w=1200&auto=format&fit=crop">
+
+            <div class="gallery-overlay">
+                <h3>Nhà xe</h3>
+                <p>Khu vực giữ xe rộng rãi, an toàn và gọn gàng.</p>
+            </div>
+        </div>
+
+        <!-- LỚP HỌC -->
+        <div class="gallery-card">
+            <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=1200&auto=format&fit=crop">
+
+            <div class="gallery-overlay">
+                <h3>Lớp học</h3>
+                <p>Không gian học tập hiện đại và đầy cảm hứng.</p>
+            </div>
+        </div>
+		 <!-- LỚP HỌC -->
+        <div class="gallery-card">
+            <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=1200&auto=format&fit=crop">
+
+            <div class="gallery-overlay">
+                <h3>Lớp học</h3>
+                <p>Không gian học tập hiện đại và đầy cảm hứng.</p>
+            </div>
+        </div
+		
+
     </div>
 
-    <p class="subtitle">
-        Trường THPT Nguyễn Trãi là môi trường học tập năng động – sáng tạo – thân thiện,  
-        nơi không chỉ truyền đạt kiến thức mà còn giúp học sinh phát triển kỹ năng sống,  
-        tư duy và cảm xúc. Đây là nơi lưu giữ những kỷ niệm đẹp nhất của tuổi học trò.
-    </p>
+</section>
+<!-- ===== GIỚI THIỆU TRƯỜNG ===== -->
+<section class="section" id="gioithieu">
 
-</section> 
-</section>  <!-- ================= MEDIA ================= -->  <section class="section reveal" id="media">  
-    <h2 class="title">Hình ảnh & Video</h2>  <div class="media-layout">  
-    <div class="grid">  
-        <img src="https://r73troypb4obj.vcdn.cloud/website02/uploads/pictures/629178c61a1b855737a80c4e/content_khuon-vien-truong-thpt-nguyen-trai-phu-yen.jpg">  
-        <img src="https://scontent.fdad4-1.fna.fbcdn.net/v/t39.30808-6/682678807_1264357839209717_7185099584303070268_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=13d280&_nc_ohc=MRVazUJevFkQ7kNvwFm1uLW&_nc_oc=AdolGQuhAktv4nnTLkFsvpx1Dlbz47LnFG-D8PIjNrk4HoTA4CxvqvfPHVgjbgJOcBY&_nc_zt=23&_nc_ht=scontent.fdad4-1.fna&_nc_gid=xrKaANk7CHm_8b4AF2tPUQ&_nc_ss=7a2a8&oh=00_Af28fALu3COe0utezMiQ1ma0ekpDsB1l0COR8RCerI1xTA&oe=69F6BD85">  
-        <img src="https://scontent.fdad4-1.fna.fbcdn.net/v/t39.30808-6/666972353_122181553310908301_7883110212343217877_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=2a1932&_nc_ohc=3ozYDAnZkDIQ7kNvwHTrgQb&_nc_oc=Adqxe8nY-W_2Xj9YxVtvVJdCmB1RbO_2VrP1rWn5JYwYEyNqpNSI1PTQLPyuLT3Jec4&_nc_zt=23&_nc_ht=scontent.fdad4-1.fna&_nc_gid=lN4qErikcKd9gohVNmO2Ow&_nc_ss=7a2a8&oh=00_Af3l_ktewgHRRvUaMgx5hcT3awRBv6_PY5_3V_6rHBPGtg&oe=69F695D5">  
-    </div>  
+    <h2 class="section-title">
+        Giới thiệu trường
+    </h2>
 
-    <div class="video-box"> 
-		<iframe
-        src="https://www.youtube.com/embed/mOedmZLVpqA"
-			    title="Video kỷ niệm"
-			    allowfullscreen>
-		</iframe> 
-        </video>  
-    </div>  
-</div>
+    <div class="website-frame">
 
-</section>  
-<!-- ================= MAP ================= -->  <section class="section reveal" id="map">  
-    <h2 class="title">Vị trí trường</h2>  
-    <iframe src="https://www.google.com/maps?q=THPT%20Nguyễn%20Trãi&output=embed"></iframe> 
-	</section>
+        <iframe
+        src="https://phuyenvrtour.com/thpt-nguyen-trai.html">
+        </iframe>
+
+    </div>
+
+</section>
 	
 	
 <!-- ================= COMMENT ================= -->
@@ -1134,78 +1464,53 @@ const names = ["Đắc Di","Thành Nam","Diệu Hoàng","Việt Trường","Tâm
 
 /* ===== ADD COMMENT ===== */
 function addComment(){
-    let box = document.getElementById("list");
-    let input = document.getElementById("cmt");
-
-    let text = input.value.trim();
+    let text = document.getElementById("cmt").value.trim();
     if(text === "") return;
 
-    // comment của bạn
-    box.innerHTML += `
-    <div class="comment">
-        <img class="avatar" src="data:image/webp;base64,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">
-        <div class="content">
-            <b>Thành Nam:</b> ${text}
-        </div>
-    </div>`;
+    let name = names[Math.floor(Math.random()*names.length)];
+    let time = new Date().toLocaleString();
 
-    input.value = "";
+    let box = document.createElement("div");
+    box.className = "comment-box";
 
-    // fake comment
-    let fakeComments = [
-        {
-            name: " Tâm Như",
-            img: "https://lh3.googleusercontent.com/pw/AP1GczNznn3AvNFYfvaNPy0p9gn1zY7pdicWtSHcsCc5t5I4Pwbu1vRS0zge8epPnCeB594Ud0GqxJeV0v-GkS-Dq-GLa6PRWgTGbbUwvtdFPMG84wmthozRUsRSx6TOm2-DflPnD8SxMRYhbRLe995iCJpclA=w429-h644-s-no-gm?authuser=0",
-            text: "Trường rất đẹp và nhiều hoạt động thú vị ❤️"
-        },
-        {
-            name: "Đắc Di",
-            img: "https://lh3.googleusercontent.com/pw/AP1GczO1Xz5BcHQelIga1LcOoz9d3gUqkdwKeEpNhohjxugs4KYDtomwPBml6pkAK3yw2vbIO9zrzrlne8-n0Fcug9dLpE_2_GucLnzaDNtLX2ogtYHi4kg2ifG6NUdVswPBR5SbPiEhFifWMQeHmeX3eUOE3g=w429-h644-s-no-gm?authuser=0",
-            text: "Mình rất thích môi trường học ở đây 😄"
-        },
-        {
-            name: "Diệu Hoàng",
-            img: "https://lh3.googleusercontent.com/pw/AP1GczMDw3VtKCZABcqvBaQ_jwt9WVWeT8QK7FV7EHO4DYY03QjpOyNc7bcdkuxaqUbJZCVL-WAUgaK8zV1GG7NwYXM_W6arLFeAev3n2qHFdQ8Y1QP7Pw_GlnVv4OemcA2XOVjHqlgNm9QoVk3cVS_bgHWyNw=w429-h644-s-no-gm?authuser=0",
-            text: "Giáo viên thân thiện, học sinh hòa đồng 👍"
-        },
-        {
-            name: "Việt Trường",
-            img: "https://scontent.fdad4-1.fna.fbcdn.net/v/t39.30808-6/672427120_1256851859960315_7722075778298481126_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=1d70fc&_nc_ohc=ft_uomxFIpkQ7kNvwH1oaMU&_nc_oc=AdqYE53Grrg0gmpCc_ys7SdWQXB2gqPzqv_mwcbl3QTV_KHu4dpjVB6FxngG6fo4o-s&_nc_zt=23&_nc_ht=scontent.fdad4-1.fna&_nc_gid=MnNnM4uQ12dIxyiI7oXrUg&_nc_ss=7a3a8&oh=00_Af3ZH8BG2Tz_9vLXrepZnUxFJ97vEp8_3pwXNjs7nWyzAQ&oe=69EA6C9E",
-            text: "Ai hỏi"
-        },
-	];
-	
-	       
+    box.innerHTML = `
+        <div class="comment-name">${name}</div>
+        <div class="comment-time">${time}</div>
+        <p>${text}</p>
+    `;
 
-   // 👇 hiện tất cả
-
-    fakeComments.forEach(cmt => {
-
-        box.innerHTML += `
-
-        <div class="comment">
-
-            <img class="avatar" src="${cmt.img}">
-
-            <div class="content">
-
-                <b>${cmt.name}:</b> ${cmt.text}
-			</div>
-		</div>`;
-	});
+    document.getElementById("list").prepend(box);
+    document.getElementById("cmt").value = "";
 }
+
+/* ===== FAKE COMMENT ===== */
+window.onload = function(){
+    const fake = [
+        "Ngôi trường tuyệt vời nhất ❤️",
+        "Thầy cô rất tâm lý luôn!",
+        "Thanh xuân của mình ở đây ",
+        "Sân trường siêu đẹp luôn!",
+        "Mong sớm quay lại trường 😭"
+    ];
+
+    fake.forEach(t=>{
+        document.getElementById("cmt").value = t;
+        addComment();
+    });
+
+    document.getElementById("cmt").value = "";
+};
 </script>
-<div id="aiBox" class="ai-box">
-    <div class="ai-header">AI Trợ Lý</div>
+<!-- ===== AI BUTTON ===== -->
+<div class="ai-button" onclick="toggleAI()">🤖</div>
+
+<div id="aiBox" class="ai-box" style="display:none;">
+    <div class="ai-header">AI Trợ Lý 🤖</div>
 
     <div id="aiChat" class="ai-chat"></div>
 
-    <input id="aiInput" placeholder="Nhập câu hỏi...">
+    <input id="aiInput" placeholder="Nhập câu hỏi..." />
     <button onclick="sendAI()">Gửi</button>
-</div>
-
-<div class="ai-button" onclick="toggleAI()">
-    🤖
 </div>
 
 <script>
