@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tra cứu giáo viên</title>
+
+<style>
+body{
+    margin:0;
+    font-family:system-ui;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(135deg,#fce7f3,#e9d5ff,#dbeafe);
+}
+
+/* ===== FORM ===== */
+.box{
+    width:90%;
+    max-width:420px;
+    background:rgba(255,255,255,0.85);
+    backdrop-filter:blur(15px);
+    padding:30px;
+    border-radius:25px;
+    box-shadow:0 20px 60px rgba(0,0,0,0.15);
+    text-align:center;
+    transition:.3s;
+}
+
+h1{
+    margin-bottom:5px;
+    font-size:28px;
+    background:linear-gradient(90deg,#ec4899,#7c3aed);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+p{
+    color:#64748b;
+    font-size:14px;
+    margin-bottom:20px;
+}
+
+input{
+    width:100%;
+    padding:12px;
+    margin:8px 0;
+    border-radius:12px;
+    border:1px solid #ddd;
+    outline:none;
+    font-size:15px;
+}
+
+input:focus{
+    border-color:#ec4899;
+    box-shadow:0 0 0 3px rgba(236,72,153,0.2);
+}
+
+button{
+    width:100%;
+    padding:12px;
+    margin-top:10px;
+    border:none;
+    border-radius:12px;
+    font-weight:700;
+    color:white;
+    background:linear-gradient(90deg,#ec4899,#7c3aed);
+    cursor:pointer;
+    transition:.3s;
+}
+
+button:hover{
+    transform:scale(1.03);
+}
+
+/* ===== CARD (ẨN BAN ĐẦU) ===== */
+.overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.35);
+    display:none;
+    justify-content:center;
+    align-items:center;
+}
+
+.card{
+    width:90%;
+    max-width:450px;
+    background:white;
+    border-radius:25px;
+    padding:30px;
+    text-align:center;
+    box-shadow:0 25px 80px rgba(0,0,0,0.25);
+    transform:scale(0.7);
+    opacity:0;
+    animation:pop .4s forwards;
+}
+
+@keyframes pop{
+    to{
+        transform:scale(1);
+        opacity:1;
+    }
+}
+
+.card img{
+    width:150px;
+    height:150px;
+    border-radius:50%;
+    object-fit:cover;
+    border:5px solid #ec4899;
+    margin-bottom:15px;
+}
+
+.name{
+    font-size:24px;
+    font-weight:900;
+    color:#7c3aed;
+}
+
+.subject{
+    margin:8px 0;
+    color:#64748b;
+    font-weight:600;
+}
+
+.desc{
+    font-size:14px;
+    color:#475569;
+    line-height:1.6;
+}
+
+.close{
+    margin-top:15px;
+    padding:10px;
+    border:none;
+    border-radius:10px;
+    background:#111827;
+    color:white;
+    cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<!-- FORM -->
+<div class="box">
+    <h1>🔍 Tra cứu giáo viên</h1>
+    <p>Nhập đúng tên + môn để hiển thị thông tin</p>
+
+    <input id="name" placeholder="Tên giáo viên">
+    <input id="subject" placeholder="Môn học">
+
+    <button onclick="search()">Tìm kiếm</button>
+</div>
+
+<!-- CARD OVERLAY -->
+<div class="overlay" id="overlay">
+    <div class="card">
+        <img id="img">
+        <div class="name" id="rname"></div>
+        <div class="subject" id="rsub"></div>
+        <div class="desc" id="rdesc"></div>
+
+        <button class="close" onclick="closeCard()">Đóng</button>
+    </div>
+</div>
+
+<script>
+
+// ===== DATA 5 GIÁO VIÊN =====
+const teachers = [
+{
+    name:"nguyen van an",
+    subject:"tin học",
+    img:"https://i.pravatar.cc/300?img=12",
+    desc:"Thầy An chuyên Tin học, dạy lập trình dễ hiểu và thực hành nhiều."
+},
+{
+    name:"phan huy phong",
+    subject:"toán",
+    img:"https://i.pravatar.cc/300?img=32",
+    desc:"Thầy Phong giảng Toán logic, dễ hiểu, rất tận tâm."
+},
+{
+    name:"le quang minh",
+    subject:"tiếng anh",
+    img:"https://i.pravatar.cc/300?img=45",
+    desc:"Thầy Minh giúp học sinh giao tiếp tiếng Anh tự tin."
+},
+{
+    name:"pham ngoc lan",
+    subject:"ngữ văn",
+    img:"https://i.pravatar.cc/300?img=23",
+    desc:"Cô Lan truyền cảm hứng văn học và cảm xúc sâu sắc."
+},
+{
+    name:"vo hoang phuc",
+    subject:"vật lý",
+    img:"https://i.pravatar.cc/300?img=60",
+    desc:"Thầy Phúc dạy Vật lý gắn với thực tế, dễ hiểu."
+}
+];
+
+function normalize(str){
+    return str
+        .toLowerCase()
+        .trim()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, ""); // bỏ dấu tiếng Việt
+}
+
+function search(){
+
+    let name = normalize(document.getElementById("name").value);
+    let subject = normalize(document.getElementById("subject").value);
+
+    let found = teachers.find(t =>
+        normalize(t.name).includes(name) &&
+        normalize(t.subject).includes(subject)
+    );
+
+    if(found){
+
+        document.getElementById("img").src = found.img;
+        document.getElementById("rname").innerText = found.name;
+        document.getElementById("rsub").innerText = "Môn: " + found.subject;
+        document.getElementById("rdesc").innerText = found.desc;
+
+        document.getElementById("overlay").style.display = "flex";
+
+    }else{
+        alert("❌ Không tìm thấy giáo viên!");
+    }
+}
+
+</script>
+
+</body>
+</html>
