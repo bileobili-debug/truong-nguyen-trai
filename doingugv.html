@@ -3,44 +3,51 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tra cứu giáo viên</title>
+<title>Tra cứu giáo viên & Phóng sự hoạt động</title>
 
 <style>
-body{
+/* Gộp chung font và style nền */
+*{
     margin:0;
-    font-family:system-ui;
-    height:100vh;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body{
+    min-height:100vh;
     display:flex;
+    flex-direction: column;
     justify-content:center;
     align-items:center;
     background:linear-gradient(135deg,#fce7f3,#e9d5ff,#dbeafe);
+    padding: 20px;
 }
 
-/* ===== FORM ===== */
+/* ===== FORM TRA CỨU ===== */
 .box{
-    width:90%;
+    width:100%;
     max-width:420px;
     background:rgba(255,255,255,0.85);
     backdrop-filter:blur(15px);
     padding:30px;
     border-radius:25px;
-    box-shadow:0 20px 60px rgba(0,0,0,0.15);
+    box-shadow:0 20px 60px rgba(0,0,0,0.1);
     text-align:center;
-    transition:.3s;
 }
 
 h1{
-    margin-bottom:5px;
     font-size:28px;
+    margin-bottom: 10px;
     background:linear-gradient(90deg,#ec4899,#7c3aed);
     -webkit-background-clip:text;
     -webkit-text-fill-color:transparent;
 }
 
-p{
+p.sub-text{
     color:#64748b;
     font-size:14px;
-    margin-bottom:20px;
+    margin-bottom: 20px;
 }
 
 input{
@@ -50,15 +57,15 @@ input{
     border-radius:12px;
     border:1px solid #ddd;
     outline:none;
-    font-size:15px;
+    transition: 0.3s;
 }
 
 input:focus{
-    border-color:#ec4899;
-    box-shadow:0 0 0 3px rgba(236,72,153,0.2);
+    border-color: #7c3aed;
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
 }
 
-button{
+button.btn-search{
     width:100%;
     padding:12px;
     margin-top:10px;
@@ -68,175 +75,176 @@ button{
     color:white;
     background:linear-gradient(90deg,#ec4899,#7c3aed);
     cursor:pointer;
-    transition:.3s;
+    transition: 0.3s;
 }
 
-button:hover{
-    transform:scale(1.03);
+button.btn-search:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(236, 72, 153, 0.4);
 }
 
-/* ===== CARD (ẨN BAN ĐẦU) ===== */
+/* ===== OVERLAY & CARD ===== */
 .overlay{
     position:fixed;
     inset:0;
-    background:rgba(0,0,0,0.35);
+    background:rgba(0,0,0,0.6);
     display:none;
     justify-content:center;
     align-items:center;
+    z-index: 1000;
 }
 
 .card{
     width:90%;
     max-width:450px;
     background:white;
-    border-radius:25px;
-    padding:30px;
+    border-radius:30px;
+    padding:35px;
     text-align:center;
-    box-shadow:0 25px 80px rgba(0,0,0,0.25);
-    transform:scale(0.7);
-    opacity:0;
-    animation:pop .4s forwards;
+    box-shadow:0 25px 80px rgba(0,0,0,0.3);
+    animation:pop .4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 @keyframes pop{
-    to{
-        transform:scale(1);
-        opacity:1;
-    }
+    from{transform:scale(0.8);opacity:0}
+    to{transform:scale(1);opacity:1}
 }
 
+/* FIX: BAO HẾT ẢNH THẦY PHONG */
 .card img{
-    width:150px;
-    height:150px;
+    width:200px;
+    height:200px;
     border-radius:50%;
-    object-fit:cover;
-    border:5px solid #ec4899;
-    margin-bottom:15px;
+    object-fit: contain; /* Hiện đầy đủ ảnh không mất góc */
+    background: #fdf2f8; 
+    border: 6px solid #ec4899;
+    padding: 5px; 
+    margin-bottom: 20px;
 }
 
 .name{
-    font-size:24px;
+    font-size:26px;
     font-weight:900;
     color:#7c3aed;
+    text-transform: capitalize;
 }
 
 .subject{
-    margin:8px 0;
     color:#64748b;
-    font-weight:600;
+    margin:8px 0;
+    font-weight: 600;
 }
 
 .desc{
-    font-size:14px;
-    color:#475569;
+    font-size:15px;
+    color:#334155;
     line-height:1.6;
+    margin-top: 10px;
 }
 
 .close{
-    margin-top:15px;
-    padding:10px;
+    margin-top:25px;
+    padding:12px 30px;
     border:none;
-    border-radius:10px;
+    border-radius:12px;
     background:#111827;
     color:white;
+    font-weight: 600;
     cursor:pointer;
+    transition: 0.3s;
+}
+
+.close:hover{
+    background: #374151;
 }
 </style>
 </head>
 
 <body>
 
-<!-- FORM -->
 <div class="box">
     <h1>🔍 Tra cứu giáo viên</h1>
-    <p>Nhập đúng tên + môn để hiển thị thông tin</p>
+    <p class="sub-text">Nhập tên + môn học (Ví dụ: Phong - Toán)</p>
 
     <input id="name" placeholder="Tên giáo viên">
     <input id="subject" placeholder="Môn học">
 
-    <button onclick="search()">Tìm kiếm</button>
+    <button class="btn-search" onclick="search()">Tìm kiếm ngay</button>
 </div>
 
-<!-- CARD OVERLAY -->
 <div class="overlay" id="overlay">
     <div class="card">
-        <img id="img">
+        <img id="img" src="" alt="Giáo viên">
         <div class="name" id="rname"></div>
         <div class="subject" id="rsub"></div>
         <div class="desc" id="rdesc"></div>
-
-        <button class="close" onclick="closeCard()">Đóng</button>
+        <button class="close" onclick="closeCard()">Đóng lại</button>
     </div>
 </div>
 
 <script>
-
-// ===== DATA 5 GIÁO VIÊN =====
 const teachers = [
-{
-    name:"nguyen van an",
-    subject:"tin học",
-    img:"https://i.pravatar.cc/300?img=12",
-    desc:"Thầy An chuyên Tin học, dạy lập trình dễ hiểu và thực hành nhiều."
-},
-{
-    name:"phan huy phong",
-    subject:"toán",
-    img:"https://i.pravatar.cc/300?img=32",
-    desc:"Thầy Phong giảng Toán logic, dễ hiểu, rất tận tâm."
-},
-{
-    name:"le quang minh",
-    subject:"tiếng anh",
-    img:"https://i.pravatar.cc/300?img=45",
-    desc:"Thầy Minh giúp học sinh giao tiếp tiếng Anh tự tin."
-},
-{
-    name:"pham ngoc lan",
-    subject:"ngữ văn",
-    img:"https://i.pravatar.cc/300?img=23",
-    desc:"Cô Lan truyền cảm hứng văn học và cảm xúc sâu sắc."
-},
-{
-    name:"vo hoang phuc",
-    subject:"vật lý",
-    img:"https://i.pravatar.cc/300?img=60",
-    desc:"Thầy Phúc dạy Vật lý gắn với thực tế, dễ hiểu."
-}
+    {
+        name:"Lê Trọng Đãi",
+        subject:"Tin học",
+        img:"https://scontent.fdad4-1.fna.fbcdn.net/v/t1.6435-9/36175963_106911363554939_7288492688800743424_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=1d70fc&_nc_ohc=TIIFDHKyO00Q7kNvwHVhM1W&_nc_oc=AdrKMDBEz9hwdQZg09RWWdfYbc8j_FhvV5XcofbygwPqx3WwKRUB52PKWP4UEd5E5TU&_nc_zt=23&_nc_ht=scontent.fdad4-1.fna&_nc_gid=6iafHeRoPSDRb8TGRfrIaA&_nc_ss=7b2a8&oh=00_Af315GcJqUxy8PYjy0pcfAFyuP_Bu_e1q1YDA_sUIZWnGA&oe=6A1A4FEF",
+        desc:"Thầy Đãi chuyên Tin học, dạy học sinh rất tâm huyết."
+    },
+    {
+        name:"Phan Huy Phong",
+        subject:"Toán",
+        img:"https://scontent.fdad4-1.fna.fbcdn.net/v/t1.15752-9/676903269_1333396945504889_8800564372860430901_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=9f807c&_nc_ohc=X2Mx_7PxHwcQ7kNvwEl7nzk&_nc_oc=AdoLcYlx9Bnmck2zyzGodaOWqISnIzKZRn79eSUGIUcOkE1OB8hvz9wLgOaHIuIDABU&_nc_zt=23&_nc_ht=scontent.fdad4-1.fna&_nc_ss=7b2a8&oh=03_Q7cD5QF9x8OdUpK5q_rOhVDkNkWbiv9CTL-7md33Dw7UKYgN8A&oe=6A1A5001",
+        desc:"Thầy Phong dạy Toán logic, dễ hiểu, phương pháp sư phạm hiện đại."
+    },
+    {
+        name:"Đào Thị Minh Bắc",
+        subject:"Tiếng Anh",
+        img:"https://scontent.fdad4-1.fna.fbcdn.net/v/t39.30808-6/646790909_4333858736876459_3614650116956352361_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=7b2446&_nc_ohc=rZf1ydZfVgwQ7kNvwHWRjVR&_nc_oc=AdozzISL9m1kZdiTGE2b-r5vdq-XRg5o144zrEMFOhcnV85VN1MjZ3jAUzUgQWKohc4&_nc_zt=23&_nc_ht=scontent.fdad4-1.fna&_nc_gid=WNZ5Bc-pg9YoF-QdbEScYw&_nc_ss=7b2a8&oh=00_Af2pINSHeFoXcitdAq7QV4n4Ct6lVjHn0E1U-SbxGvI12g&oe=69F897ED",
+        desc:"Cô Bắc giúp học sinh tự tin giao tiếp và đạt điểm cao."
+    }
 ];
 
 function normalize(str){
-    return str
-        .toLowerCase()
-        .trim()
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, ""); // bỏ dấu tiếng Việt
+    return str.toLowerCase().trim()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g,"");
 }
 
 function search(){
+    let inputName = normalize(document.getElementById("name").value);
+    let inputSubject = normalize(document.getElementById("subject").value);
 
-    let name = normalize(document.getElementById("name").value);
-    let subject = normalize(document.getElementById("subject").value);
+    if(inputName === "" && inputSubject === ""){
+        alert("Vui lòng nhập thông tin tìm kiếm!");
+        return;
+    }
 
     let found = teachers.find(t =>
-        normalize(t.name).includes(name) &&
-        normalize(t.subject).includes(subject)
+        normalize(t.name).includes(inputName) &&
+        normalize(t.subject).includes(inputSubject)
     );
 
     if(found){
-
         document.getElementById("img").src = found.img;
         document.getElementById("rname").innerText = found.name;
-        document.getElementById("rsub").innerText = "Môn: " + found.subject;
+        document.getElementById("rsub").innerText = "Môn giảng dạy: " + found.subject;
         document.getElementById("rdesc").innerText = found.desc;
-
         document.getElementById("overlay").style.display = "flex";
-
-    }else{
-        alert("❌ Không tìm thấy giáo viên!");
+    } else {
+        alert("Không tìm thấy giáo viên. Bạn hãy thử kiểm tra lại tên hoặc môn học!");
     }
 }
 
+function closeCard(){
+    document.getElementById("overlay").style.display = "none";
+}
+
+// Cho phép nhấn Enter để tìm kiếm
+document.addEventListener('keypress', function (e) {
+    if (e.key === 'Enter') {
+        search();
+    }
+});
 </script>
 
 </body>
